@@ -1,0 +1,6 @@
+*
+!.gitignore
+!index.sql
+!app/
+!app/Queries/
+!app/Queries/**

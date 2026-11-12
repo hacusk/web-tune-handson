@@ -1,0 +1,390 @@
+<!doctype html>
+<html lang="ja">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ラーメンRunner</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f4f5f7;
+  --surface: #ffffff;
+  --ink: #2c2c2c;
+  --muted: #6b6b6b;
+  --line: #e6e6e6;
+  --accent: #e85a2a;
+  --accent-deep: #d14a1e;
+  --star: #f0a000;
+  --soft: #fff4ee;
+  --info: #f7f8fa;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--ink);
+  font: 400 15px/1.7 "Zen Kaku Gothic New", sans-serif;
+  background:
+    linear-gradient(180deg, #fff8f4 0px, var(--bg) 180px);
+}
+a {
+  color: var(--accent-deep);
+  text-decoration: none;
+}
+a:hover { text-decoration: underline; text-underline-offset: 3px; }
+button, select, input, textarea {
+  font: inherit;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid #d8d8d8;
+  border-radius: 6px;
+  padding: 8px 12px;
+}
+button {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 140ms ease;
+}
+button:hover { background: var(--accent-deep); }
+.like {
+  background: var(--surface);
+  border: 1px solid #d8d8d8;
+  color: var(--ink);
+  font-weight: 500;
+}
+.like:hover {
+  background: var(--soft);
+  border-color: #f0b89a;
+  color: var(--accent-deep);
+}
+.shell {
+  width: min(920px, calc(100% - 24px));
+  margin: 0 auto;
+  padding: 0 0 48px;
+}
+.topbar {
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.02);
+  border-top: 3px solid var(--accent);
+}
+.topbar__inner {
+  width: min(920px, calc(100% - 24px));
+  margin: 0 auto;
+  padding: 14px 0 12px;
+  display: grid;
+  gap: 8px;
+}
+.brand {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.brand__name {
+  margin: 0;
+  font-family: "M PLUS Rounded 1c", sans-serif;
+  font-size: clamp(1.55rem, 4vw, 1.9rem);
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+  color: var(--ink);
+}
+.brand__name a { color: inherit; text-decoration: none; }
+.brand__name a:hover { text-decoration: none; }
+.brand__name span { color: var(--accent); }
+.brand__lead {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+nav {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  margin-top: 2px;
+}
+nav a {
+  color: var(--ink);
+  font-weight: 700;
+  font-size: 0.92rem;
+  text-decoration: none;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: transparent;
+}
+nav a:hover {
+  background: var(--soft);
+  color: var(--accent-deep);
+  text-decoration: none;
+}
+.meta {
+  margin: 14px 0 16px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: var(--info);
+  border: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 0.86rem;
+}
+main {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 4px 18px 18px;
+}
+.shop-list { display: grid; gap: 0; }
+.shop-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) auto;
+  gap: 10px 20px;
+  padding: 16px 4px;
+  border-bottom: 1px solid var(--line);
+  align-items: start;
+  transition: background 140ms ease;
+}
+.shop-row:last-child { border-bottom: none; }
+.shop-row:hover { background: #fffaf7; }
+.shop-row__name {
+  margin: 0 0 4px;
+  font-family: "M PLUS Rounded 1c", sans-serif;
+  font-size: 1.12rem;
+  font-weight: 700;
+  line-height: 1.35;
+}
+.shop-row__name a { color: var(--ink); text-decoration: none; }
+.shop-row__name a:hover { color: var(--accent-deep); text-decoration: underline; }
+.shop-row__desc {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.shop-row__stats {
+  text-align: right;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  padding-top: 2px;
+}
+.shop-row__count {
+  color: var(--muted);
+  font-size: 0.86rem;
+  margin-top: 2px;
+}
+.stars {
+  color: var(--star);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  font-variant-numeric: tabular-nums;
+}
+.stars--empty { color: #aaa; font-weight: 500; }
+h2 {
+  margin: 14px 0 8px;
+  font-family: "M PLUS Rounded 1c", sans-serif;
+  font-size: 1.35rem;
+  font-weight: 800;
+}
+.detail-lead { color: var(--muted); margin: 0 0 12px; }
+.panel {
+  background: var(--info);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 14px;
+  margin: 14px 0;
+}
+form.panel { display: grid; gap: 10px; max-width: 520px; }
+table { width: 100%; border-collapse: collapse; margin: 8px 0; }
+td, th {
+  padding: 10px 8px;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+  font-size: 0.92rem;
+}
+th {
+  color: var(--muted);
+  font-weight: 500;
+  font-size: 0.8rem;
+  background: #fafafa;
+}
+details {
+  margin-top: 16px;
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+details summary { cursor: pointer; }
+pre {
+  white-space: pre-wrap;
+  background: #fafafa;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 12px;
+  color: #444;
+  overflow: auto;
+}
+.foot {
+  margin-top: 14px;
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+@media (max-width: 720px) {
+  .shop-row { grid-template-columns: 1fr; }
+  .shop-row__stats { text-align: left; }
+  main { padding: 2px 12px 14px; }
+}
+</style>
+<body>
+<header class="topbar">
+  <div class="topbar__inner">
+    <div class="brand">
+      <h1 class="brand__name"><a href="#/">ラーメン<span>Runner</span></a></h1>
+      <p class="brand__lead">ラーメン店の口コミサイト（架空） · 店舗1000 · レビュー約20万件</p>
+    </div>
+    <nav>
+      <a href="#/">店舗一覧</a>
+      <a href="#/ranking">人気レビュー</a>
+      <a href="#/users/1">ユーザー</a>
+    </nav>
+  </div>
+</header>
+<div class="shell">
+  <div class="meta" id="meta">読み込み中…</div>
+  <main id="main"></main>
+  <details>
+    <summary>実行SQLを見る</summary>
+    <pre id="sql"></pre>
+  </details>
+  <p class="foot">表示はブラウザからの単発リクエストの計測です。負荷試験は README の bench コマンドを使います。</p>
+</div>
+<script>
+const $ = (id) => document.getElementById(id);
+const h = (tag, attrs = {}, ...children) => {
+  const el = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs)) {
+    if (k.startsWith('on')) el.addEventListener(k.slice(2), v);
+    else if (k === 'className') el.className = v;
+    else el.setAttribute(k, v);
+  }
+  el.append(...children.flat().map((c) => (c instanceof Node ? c : document.createTextNode(String(c ?? '')))));
+  return el;
+};
+const me = () => Number(localStorage.getItem('userId') || 1);
+const stars = (n) => {
+  if (n == null) return h('span', { className: 'stars stars--empty' }, '未評価');
+  const full = Math.round(Number(n));
+  return h('span', { className: 'stars' }, `${'★'.repeat(full)}${'☆'.repeat(Math.max(0, 5 - full))} ${Number(n).toFixed(2)}`);
+};
+
+async function api(path, options) {
+  const sep = path.includes('?') ? '&' : '?';
+  const res = await fetch(path + sep + 'debug=1', options);
+  const payload = await res.json();
+  if (!res.ok) throw Error(payload.error || res.statusText);
+  if (payload.meta) {
+    $('meta').textContent = `${path} — SQL ${payload.meta.query_count} 回 / サーバー処理 ${payload.meta.elapsed_ms} ms`;
+    $('sql').textContent = JSON.stringify(payload.meta.queries, null, 2);
+  }
+  return payload.data;
+}
+
+function reviewTable(reviews, { showShop = true } = {}) {
+  return h('table', {},
+    h('tr', {}, h('th', {}, '投稿日'), showShop ? h('th', {}, '店舗') : '', h('th', {}, '投稿者'), h('th', {}, '評価'), h('th', {}, 'レビュー'), h('th', {}, 'いいね')),
+    reviews.map((r) => h('tr', {},
+      h('td', {}, r.created_at),
+      showShop ? h('td', {}, h('a', { href: `#/shops/${r.shop_id}` }, r.shop_name)) : '',
+      h('td', {}, h('a', { href: `#/users/${r.user_id}` }, r.user_name)),
+      h('td', {}, h('span', { className: 'stars' }, '★'.repeat(r.rating))),
+      h('td', {}, r.body),
+      h('td', {}, h('button', { className: 'like', onclick: (e) => like(r, e.target) }, `いいね ${r.like_count}`)),
+    )));
+}
+
+async function like(review, button) {
+  const res = await fetch(`/api/reviews/${review.id}/likes`, {
+    method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ user_id: me() }),
+  });
+  if (res.status === 201) button.textContent = `いいね ${++review.like_count}`;
+  else button.title = (await res.json()).error;
+}
+
+const pages = {
+  async shops() {
+    const shops = await api('/api/shops');
+    return h('div', {},
+      h('h2', {}, '店舗一覧'),
+      h('div', { className: 'shop-list' }, shops.map((s) =>
+        h('article', { className: 'shop-row' },
+          h('div', {},
+            h('h3', { className: 'shop-row__name' }, h('a', { href: `#/shops/${s.id}` }, s.name)),
+            h('p', { className: 'shop-row__desc' }, s.description)),
+          h('div', { className: 'shop-row__stats' },
+            h('div', {}, stars(s.average_rating)),
+            h('div', { className: 'shop-row__count' }, `${s.review_count} 件`))))));
+  },
+  async shop(id, rating) {
+    const shop = await api(`/api/shops/${id}`);
+    const reviews = rating ? await api(`/api/shops/${id}/reviews?rating=${rating}`) : shop.reviews;
+    const select = h('select', { onchange: (e) => (location.hash = `#/shops/${id}${e.target.value ? '/rating/' + e.target.value : ''}`) },
+      h('option', { value: '' }, 'すべての評価'), [5, 4, 3, 2, 1].map((n) => h('option', { value: n }, '★'.repeat(n))));
+    select.value = rating || '';
+    const form = h('form', { className: 'panel', onsubmit: async (e) => {
+      e.preventDefault();
+      const data = Object.fromEntries(new FormData(form));
+      await api(`/api/shops/${id}/reviews`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ user_id: me(), rating: Number(data.rating), body: data.body }) });
+      route();
+    } },
+      h('strong', {}, `ユーザー ${me()} としてレビューを書く`),
+      h('select', { name: 'rating' }, [5, 4, 3, 2, 1].map((n) => h('option', { value: n }, '★'.repeat(n)))),
+      h('textarea', { name: 'body', maxlength: 200, required: '', rows: 2 }),
+      h('button', {}, '投稿'));
+    return h('div', {},
+      h('h2', {}, shop.name),
+      h('p', { className: 'detail-lead' }, shop.description),
+      h('p', {}, stars(shop.average_rating), ` / レビュー ${shop.review_count} 件`),
+      h('label', {}, '絞り込み ', select),
+      reviewTable(reviews, { showShop: false }),
+      form);
+  },
+  async ranking() {
+    return h('div', {}, h('h2', {}, 'いいねの多いレビュー'), reviewTable(await api('/api/ranking')));
+  },
+  async user(id) {
+    const user = await api(`/api/users/${id}`);
+    const input = h('input', { type: 'number', min: 1, max: 1000, value: me(), style: 'width:6em' });
+    return h('div', {},
+      h('h2', {}, user.name),
+      h('p', {}, `レビュー ${user.review_count} 件 / もらったいいね ${user.received_likes}`),
+      h('div', { className: 'panel' }, 'このブラウザで操作するユーザーID ', input, ' ',
+        h('button', { onclick: () => { localStorage.setItem('userId', input.value); route(); } }, '切り替え')),
+      reviewTable(user.reviews));
+  },
+};
+
+async function route() {
+  const parts = location.hash.replace(/^#\/?/, '').split('/');
+  $('meta').textContent = '読み込み中…';
+  try {
+    let view;
+    if (parts[0] === 'shops' && parts[1]) view = await pages.shop(parts[1], parts[3]);
+    else if (parts[0] === 'ranking') view = await pages.ranking();
+    else if (parts[0] === 'users' && parts[1]) view = await pages.user(parts[1]);
+    else view = await pages.shops();
+    $('main').replaceChildren(view);
+  } catch (e) {
+    $('meta').textContent = e.message;
+  }
+}
+addEventListener('hashchange', route);
+route();
+</script>
+</body>
+</html>

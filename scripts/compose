@@ -1,0 +1,5 @@
+#!/bin/sh
+set -eu
+cd "$(dirname "$0")/.."
+engine=$(sh scripts/engine)
+exec "$engine" compose "$@"

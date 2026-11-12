@@ -1,0 +1,34 @@
+{
+  "checksums": [
+    {
+      "id": "github_release/github.com/grafana/k6/v1.6.0/k6-v1.6.0-linux-amd64.tar.gz",
+      "checksum": "365591AE4039B51B2843B4A117E2DDE96FA20CC0C5DF800A330790380EEBB697",
+      "algorithm": "sha256"
+    },
+    {
+      "id": "github_release/github.com/grafana/k6/v1.6.0/k6-v1.6.0-linux-arm64.tar.gz",
+      "checksum": "5B1139EC5E2FA503FA694961120859DB4DB7573E4934F4069ED8964F3E3D7450",
+      "algorithm": "sha256"
+    },
+    {
+      "id": "github_release/github.com/grafana/k6/v1.6.0/k6-v1.6.0-macos-amd64.zip",
+      "checksum": "FDC7539E16247D44285D95D8812A196F767D83723295852213B51C4CF6955C5D",
+      "algorithm": "sha256"
+    },
+    {
+      "id": "github_release/github.com/grafana/k6/v1.6.0/k6-v1.6.0-macos-arm64.zip",
+      "checksum": "68EB07F59102127581E67ADEF1305BF8D4DCB2409FE562CF376D6B0D1FDC8A4B",
+      "algorithm": "sha256"
+    },
+    {
+      "id": "github_release/github.com/grafana/k6/v1.6.0/k6-v1.6.0-windows-amd64.zip",
+      "checksum": "B97A5979120069DD83C3877E10E979656572B698FCB0C06A26C8CAB9C2C02024",
+      "algorithm": "sha256"
+    },
+    {
+      "id": "registries/github_content/github.com/aquaproj/aqua-registry/v4.527.0/registry.yaml",
+      "checksum": "009195F9810259B038EC011E749654006F1D450966C411674E74A4E0D1021F8D",
+      "algorithm": "sha256"
+    }
+  ]
+}

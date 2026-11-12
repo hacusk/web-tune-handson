@@ -1,0 +1,35 @@
+#!/bin/sh
+set -eu
+cd "$(dirname "$0")/.."
+label=${1:-before}
+case "$label" in ''|*[!a-zA-Z0-9_-]*) echo 'ラベルは英数字・_・-のみ' >&2; exit 2;; esac
+if [ -e "results/$label.json" ]; then echo "results/$label.json は既にあります。別のラベルを指定してください。" >&2; exit 2; fi
+
+# Dev Container 内（または BENCH_LOCAL=1）では、コンテナ内の php / k6 を直接使う
+in_devcontainer() {
+  [ -n "${REMOTE_CONTAINERS:-}" ] || [ -n "${DEVCONTAINER:-}" ] || [ "${BENCH_LOCAL:-}" = "1" ]
+}
+
+# 負荷のつまみ（未設定なら bench.js の既定。重いPCは BENCH_VUS=2 など）
+if in_devcontainer; then
+  php tests/check.php
+  export BASE_URL="${BENCH_BASE_URL:-http://127.0.0.1:3000}" LABEL="$label"
+  # BENCH_VUS / BENCH_DURATION は呼び出し元の環境をそのまま引き継ぐ
+  k6 run --quiet "$PWD/bench/bench.js"
+  # k6 は /results に書く。ワークスペース側にも見えるよう同期（bind していない場合の保険）
+  if [ -f "/results/$label.json" ] && [ ! -f "results/$label.json" ]; then
+    cp "/results/$label.json" "results/$label.json"
+  fi
+else
+  engine=$(sh scripts/engine)
+  sh scripts/compose exec -T app php /work/tests/check.php
+  k6_args="-e BASE_URL=${BENCH_BASE_URL:-http://app:3000} -e LABEL=$label"
+  [ -n "${BENCH_VUS:-}" ] && k6_args="$k6_args -e BENCH_VUS=$BENCH_VUS"
+  [ -n "${BENCH_DURATION:-}" ] && k6_args="$k6_args -e BENCH_DURATION=$BENCH_DURATION"
+  # shellcheck disable=SC2086
+  "$engine" run --rm --network web-tune-handson_default --user 0:0 \
+      -v "$PWD/bench:/bench:ro" -v "$PWD/results:/results" \
+      $k6_args \
+      grafana/k6:1.6.0@sha256:be2a9ceb1b6ffc573277af4157135882a6d6433968b41e858ab02c5fd5847532 \
+      run --quiet /bench/bench.js
+fi

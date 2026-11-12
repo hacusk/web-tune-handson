@@ -1,0 +1,10 @@
+#!/bin/sh
+set -eu
+engine=${CONTAINER_ENGINE:-}
+if [ -z "$engine" ]; then
+    if command -v docker >/dev/null 2>&1; then engine=docker
+    elif command -v finch >/dev/null 2>&1; then engine=finch
+    else echo 'DockerまたはFinchが見つかりません。PATHを確認してください。' >&2; exit 127
+    fi
+fi
+echo "$engine"

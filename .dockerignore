@@ -1,0 +1,14 @@
+*
+!Dockerfile
+!.devcontainer/
+!.devcontainer/**
+!app/
+!app/**
+app/vendor/
+app/node_modules/
+app/.env
+app/storage/logs/**
+app/storage/framework/cache/**
+app/storage/framework/sessions/**
+app/storage/framework/views/**
+!instructor/observability/Dockerfile

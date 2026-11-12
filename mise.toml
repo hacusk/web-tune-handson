@@ -1,0 +1,3 @@
+# ホストで PHP を使う場合のピン。通常の起動・計測は Docker Compose / Dev Container を使う。
+[tools]
+php = "8.4.14"

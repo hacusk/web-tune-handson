@@ -1,0 +1,6 @@
+/results/*.json
+.DS_Store
+node_modules/
+instructor/observability/node_modules/
+instructor/k8s-auth/node_modules/
+AGENT.md
